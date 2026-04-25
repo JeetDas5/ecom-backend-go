@@ -7,6 +7,7 @@ import (
 
 type Service interface {
 	ListProducts(ctx context.Context) ([]repo.Product, error)
+	GetProductByID(ctx context.Context, id int64) (repo.Product, error)
 }
 
 type svc struct {
@@ -24,4 +25,13 @@ func (s *svc) ListProducts(ctx context.Context) ([]repo.Product, error) {
 		return nil, err
 	}
 	return products, nil
+}
+
+func (s *svc) GetProductByID(ctx context.Context, id int64) (repo.Product, error) {
+	product, err := s.repo.GetProductByID(ctx, id)
+	if err != nil {
+		return repo.Product{}, err
+	}
+
+	return product, nil
 }

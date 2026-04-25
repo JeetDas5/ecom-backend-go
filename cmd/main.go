@@ -34,11 +34,16 @@ func main() {
 	}
 	defer conn.Close(ctx)
 
+	if err := ensureProductsTable(ctx, conn); err != nil {
+		log.Printf("failed to initialize products table: %v", err)
+		os.Exit(1)
+	}
+
 	logger.Info("connected to database", "dsn", cfg.db.dsn)
 
 	api := application{
 		config: cfg,
-		db: conn,
+		db:     conn,
 	}
 
 	slog.Info("starting server", "addr", api.config.addr)
@@ -47,4 +52,21 @@ func main() {
 		log.Printf("server failed to start: %s", err)
 		os.Exit(1)
 	}
+}
+
+func ensureProductsTable(ctx context.Context, conn *pgx.Conn) error {
+	const query = `
+	CREATE TABLE IF NOT EXISTS products (
+		id BIGSERIAL PRIMARY KEY,
+		name TEXT NOT NULL,
+		description TEXT,
+		price_in_cents INTEGER NOT NULL CHECK (price_in_cents >= 0),
+		quantity INTEGER NOT NULL CHECK (quantity >= 0) DEFAULT 0,
+		created_at TIMESTAMPTZ DEFAULT NOW(),
+		updated_at TIMESTAMPTZ DEFAULT NOW()
+	);
+	`
+
+	_, err := conn.Exec(ctx, query)
+	return err
 }

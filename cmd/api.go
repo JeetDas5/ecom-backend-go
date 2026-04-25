@@ -33,6 +33,7 @@ func (app *application) mount() http.Handler {
 	productsService := products.NewService(repo.New(app.db))
 	productsHandler := products.NewHandler(productsService)
 	r.Get("/products", productsHandler.ListProducts)
+	r.Get("/products/{id}", productsHandler.GetProductByID)
 
 	// http.ListenAndServe(":3333", r)
 

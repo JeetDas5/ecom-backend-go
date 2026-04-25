@@ -1,19 +1,27 @@
 package products
 
-import "context"
+import (
+	"context"
+	repo "github/JeetDas5/ecom-app/internal/adapters/postgresql/sqlc"
+)
 
 type Service interface {
-	ListProducts(ctx context.Context) ([]string, error)
+	ListProducts(ctx context.Context) ([]repo.Product, error)
 }
 
 type svc struct {
 	//repo
+	repo repo.Querier
 }
 
-func NewService() Service {
-	return &svc{}
+func NewService(repo repo.Querier) Service {
+	return &svc{repo: repo}
 }
 
-func (s *svc) ListProducts(ctx context.Context) ([]string, error) {
-	return []string{"product1", "product2", "product3"}, nil
+func (s *svc) ListProducts(ctx context.Context) ([]repo.Product, error) {
+	products, err := s.repo.ListProducts(ctx)
+	if err != nil {
+		return nil, err
+	}
+	return products, nil
 }

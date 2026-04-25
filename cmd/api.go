@@ -1,11 +1,13 @@
 package main
 
 import (
-	repo "github/JeetDas5/ecom-app/internal/adapters/postgresql/sqlc"
-	"github/JeetDas5/ecom-app/internal/products"
 	"log"
 	"net/http"
 	"time"
+
+	repo "github.com/JeetDas5/ecom-app/internal/adapters/postgresql/sqlc"
+	"github.com/JeetDas5/ecom-app/internal/orders"
+	"github.com/JeetDas5/ecom-app/internal/products"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
@@ -34,6 +36,10 @@ func (app *application) mount() http.Handler {
 	productsHandler := products.NewHandler(productsService)
 	r.Get("/products", productsHandler.ListProducts)
 	r.Get("/products/{id}", productsHandler.GetProductByID)
+
+	orderService := orders.NewService(repo.New(app.db), app.db)
+	ordersHandler := orders.NewHandler(orderService)
+	r.Post("/orders", ordersHandler.PlaceOrder)
 
 	// http.ListenAndServe(":3333", r)
 

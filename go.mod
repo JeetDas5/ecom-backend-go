@@ -1,4 +1,4 @@
-module github/JeetDas5/ecom-app
+module github.com/JeetDas5/ecom-app
 
 go 1.26.1
 

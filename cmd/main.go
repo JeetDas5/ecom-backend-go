@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	"github/JeetDas5/ecom-app/internal/env"
+	"github.com/JeetDas5/ecom-app/internal/env"
 	"log"
 	"log/slog"
 	"os"

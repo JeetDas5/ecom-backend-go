@@ -1,7 +1,7 @@
 package products
 
 import (
-	"github/JeetDas5/ecom-app/internal/json"
+	"github.com/JeetDas5/ecom-app/internal/json"
 	"log"
 	"net/http"
 	"strconv"

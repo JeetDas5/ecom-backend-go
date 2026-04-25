@@ -2,7 +2,7 @@ package products
 
 import (
 	"context"
-	repo "github/JeetDas5/ecom-app/internal/adapters/postgresql/sqlc"
+	repo "github.com/JeetDas5/ecom-app/internal/adapters/postgresql/sqlc"
 )
 
 type Service interface {

@@ -38,6 +38,7 @@ func main() {
 
 	api := application{
 		config: cfg,
+		db: conn,
 	}
 
 	slog.Info("starting server", "addr", api.config.addr)
